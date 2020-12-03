@@ -16,4 +16,20 @@
         200
         </Delta>
     </Servo2>
+    <Servo3>
+        <MiddlePosition>
+        1500
+        </MiddlePosition>
+        <Delta>
+        200
+        </Delta>
+    </Servo3>
+    <Servo4>
+        <MiddlePosition>
+        1500
+        </MiddlePosition>
+        <Delta>
+        200
+        </Delta>
+    </Servo4>
 </RobotArm>
