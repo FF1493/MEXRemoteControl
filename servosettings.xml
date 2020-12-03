@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RobotArm>
+    <Servo1>
+        <MiddlePosition>
+        1500
+        </MiddlePosition>
+        <Delta>
+        200
+        </Delta>
+    </Servo1>
+    <Servo2>
+        <MiddlePosition>
+        1500
+        </MiddlePosition>
+        <Delta>
+        200
+        </Delta>
+    </Servo2>
+</RobotArm>
