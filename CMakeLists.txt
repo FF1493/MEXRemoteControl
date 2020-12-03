@@ -204,3 +204,4 @@ include_directories(
 # catkin_add_nosetests(test)
 add_executable(ros2serial.cpp src/ros2serial.cpp)
 target_link_libraries(ros2serial.cpp ${catkin_LIBRARIES})
+include_directories(include)
