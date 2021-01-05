@@ -20,8 +20,9 @@ int main(int argc, char **argv)
 {
     unsigned short acceleration = 10;
     unsigned short speed = 100;
+
     ros::init(argc,argv,"MEXlistener");
-    ros::NodeHandle nh;
+    //ros::NodeHandle nh;
 
     Pololu conn=  Pololu("/dev/ttyACM0",9600);
     ServoMotor Servo1 = ServoMotor(1,5680,3600,&conn);
@@ -32,9 +33,9 @@ int main(int argc, char **argv)
     conn.openConnection();
     
     Servo1.setSpeed(speed);
-    Servo1.setAcclaration(acceleration);
+    Servo1.setAccelaration(acceleration);
     Servo1.setPositionInAbs(5680);
-    
+    Servo1.setPositionInAbs(1000);
     
     
     
