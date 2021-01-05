@@ -177,11 +177,11 @@ include_directories(
 # )
 
 ## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
+#   install(DIRECTORY include/${PROJECT_NAME}/
 #   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
+#   FILES_MATCHING PATTERN "*.hpp"
 #   PATTERN ".svn" EXCLUDE
-# )
+#   )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
@@ -202,6 +202,6 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(ros2serial.cpp src/ros2serial.cpp)
-target_link_libraries(ros2serial.cpp ${catkin_LIBRARIES})
 include_directories(include)
+add_executable(ros2serial.cpp src/ros2serial.cpp src/SerialCom.cpp src/ServoMotor.cpp src/Pololu)
+target_link_libraries(ros2serial.cpp ${catkin_LIBRARIES})
