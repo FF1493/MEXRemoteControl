@@ -18,18 +18,22 @@ struct Servo{
 
 int main(int argc, char **argv)
 {
-    
+    unsigned short acceleration = 10;
+    unsigned short speed = 100;
     ros::init(argc,argv,"MEXlistener");
     ros::NodeHandle nh;
 
     Pololu conn=  Pololu("/dev/ttyACM0",9600);
-    ServoMotor Servo1 = ServoMotor(1,6000,1200,&conn);
+    ServoMotor Servo1 = ServoMotor(1,5680,3600,&conn);
     ServoMotor Servo2 =  ServoMotor(2,6000,3600,&conn);
     ServoMotor Servo3 =  ServoMotor(3,6000,3600,&conn);
     ServoMotor Servo4 =  ServoMotor(4,6000,3600,&conn);
      
     conn.openConnection();
     
+    Servo1.setSpeed(speed);
+    Servo1.setAcclaration(acceleration);
+    Servo1.setPositionInAbs(5680);
     
     
     
