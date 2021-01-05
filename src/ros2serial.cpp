@@ -28,6 +28,8 @@ int main(int argc, char **argv)
     ServoMotor Servo3 =  ServoMotor(3,6000,3600,&conn);
     ServoMotor Servo4 =  ServoMotor(4,6000,3600,&conn);
      
+    conn.openConnection();
+    
     
     
     
