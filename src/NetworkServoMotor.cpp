@@ -6,26 +6,30 @@ NetworkServoMotor::NetworkServoMotor(unsigned short servo, unsigned short starti
 {
     servonum=servo;
      //n=new ros::NodeHandle
-    publishpos = n.advertise<geometry_msgs::Point>("servo"+to_string(servonum), 10);
-    subservangl = n.subscribe("servo"+to_string(servonum), 5, &NetworkServoMotor::callback,this);
+    publishpos = n.advertise<MEXRemoteControl::servomsg>("servo"+to_string(servonum), 10);
+    subservangl = n.subscribe("servorsp"+to_string(servonum), 5, &NetworkServoMotor::callback,this);
 }
 NetworkServoMotor::~NetworkServoMotor(){}
 
 
-void NetworkServoMotor::publishServostate(int targetposition){
-    geometry_msgs::Point point;
-    point.x=targetposition;
-    publishpos.publish(point);
+bool NetworkServoMotor::setPositionInAbs(unsigned short newPosition){
+    MEXRemoteControl::servomsg msg;
+    msg.value=newPosition;
+    publishpos.publish(msg);
 
 }
 
-void NetworkServoMotor::callback(const geometry_msgs::Point& msg)
+void NetworkServoMotor::callback(const MEXRemoteControl::servorsp& msg)
 {
-    position=msg.x;
+    absposition=msg.abspos;
+    degposition=msg.degpos;
+    radposition=msg.radpos;
 }
 
-int NetworkServoMotor::getPositionInAbs()
+unsigned short NetworkServoMotor::getPositionInAbs()
 {
     ros::spinOnce();
-    return position;
+    return absposition;
 }
+
+unsigned short NetworkServoMotor::getServoNumber(){return servonum;}

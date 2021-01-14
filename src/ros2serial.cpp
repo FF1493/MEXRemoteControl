@@ -2,13 +2,11 @@
 #include "std_msgs/String.h"
 #include "Pololu.hpp"
 #include "ServoMotor.hpp"
+#include "NetworkSerial.hpp"
 #include "SerialCom.hpp"
 
 Pololu conn();
-ServoMotor Servo1();
-ServoMotor Servo2();
-ServoMotor Servo3();
-ServoMotor Servo4();
+
 
 struct Servo{
     int Middle, Delta;
@@ -25,10 +23,10 @@ int main(int argc, char **argv)
     //ros::NodeHandle nh;
 
     Pololu conn=  Pololu("/dev/ttyACM0",9600);
-    ServoMotor Servo1 = ServoMotor(1,5680,3600,&conn);
-    ServoMotor Servo2 =  ServoMotor(2,6000,3600,&conn);
-    ServoMotor Servo3 =  ServoMotor(3,6000,3600,&conn);
-    ServoMotor Servo4 =  ServoMotor(4,6000,3600,&conn);
+    NetworkSerial Servo1 = NetworkSerial(1,5680,3600,&conn);
+    NetworkSerial Servo2 =  NetworkSerial(2,6000,3600,&conn);
+    NetworkSerial Servo3 =  NetworkSerial(3,6000,3600,&conn);
+    NetworkSerial Servo4 =  NetworkSerial(4,6000,3600,&conn);
      
     conn.openConnection();
     

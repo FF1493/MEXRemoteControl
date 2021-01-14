@@ -1,0 +1,20 @@
+actions: []
+authors: ''
+brief: ''
+bugtracker: ''
+depends:
+- message_generation
+- message_runtime
+- catkin
+- roscpp
+description: The MEXRemoteControl package includes all files that are required to
+  remotly controll the MEX Robot arm!
+license: TODO
+maintainers: henrik <henrik.wittemeier@fh-bielefeld.de>
+msgs:
+- servorsp
+- servomsg
+package_type: package
+repo_url: ''
+srvs: []
+url: ''
