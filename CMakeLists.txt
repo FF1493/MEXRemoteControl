@@ -203,5 +203,7 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 include_directories(include)
-add_executable(ros2serial.cpp src/ros2serial.cpp src/SerialCom.cpp src/ServoMotor.cpp src/Pololu)
+add_executable(ros2serial.cpp src/ros2serial.cpp src/SerialCom.cpp src/ServoMotor.cpp src/Pololu.cpp src/NetworkServoMotor.cpp )
+add_executable(remote.cpp remote.cpp src/SerialCom.cpp src/ServoMotor.cpp src/Pololu.cpp src/NetworkServoMotor.cpp )
+target_link_libraries(remote.cpp ${catkin_LIBRARIES})
 target_link_libraries(ros2serial.cpp ${catkin_LIBRARIES})

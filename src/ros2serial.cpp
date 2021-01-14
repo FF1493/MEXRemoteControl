@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     conn.openConnection();
     
     Servo1.setSpeed(speed);
-    Servo1.setAccelaration(acceleration);
+    Servo1.setAcceleration(acceleration);
     Servo1.setPositionInAbs(5680);
     Servo1.setPositionInAbs(1000);
     

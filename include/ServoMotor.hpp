@@ -1,8 +1,8 @@
 //============================================================================
 // Name        : ServoMotor.hpp
-// Author      : Willi Penner
+// Author      : Willi Penner / martin huelse (martin.huelse@fh-bielefeld.de)
 //
-// Description : Headerfile contains the interface IServoMotor and the class
+// Description : Header file contains the interface IServoMotor and the class
 //               ServoMotor with its functions to control a specific servo.
 //============================================================================
 #include "Pololu.hpp"
@@ -11,156 +11,509 @@
 #ifndef SERVOMOTOR_HPP_
 #define SERVOMOTOR_HPP_
 
-/** \brief Interface to control a servo. The interface
- *  provides the basic functions for the control of a specific servo motor.
+
+/**
+ *
+ * \class IServoMotorBase
+ *
+ * \brief Interface class that specifies the basic
+ * functionality of object that initializes and
+ * controls a servo motor.
+ *
+ * The positions of the servo motor are defined
+ * by positions values (given in units).
+ *
+ *
+ */
+class IServoMotorBase{
+public:
+	virtual ~IServoMotorBase(){};
+
+	/**
+	 *
+	 * \brief Delivers the ID of the servo motor instance.
+	 * This ID might related to certain connectors of the
+	 * board / HW used to control the servo motor.
+	 * This must be specified in the actual implementation
+	 * of this inteface by the derived classes.
+	 *
+	 *  \return unsigned int number of the connector of the servo
+	 *  motor on the board.
+	 *
+	 */
+	virtual unsigned short getServoNumber() = 0;
+
+	/**
+	 *
+	 * \brief Delivers the minimal position value the servo
+	 * motor can / shall move to.
+	 *
+	 *  \return unsigned short
+	 *
+	 */
+	virtual unsigned short getMinPosInAbs() = 0;
+
+	/**
+	 *
+	 * \brief Delivers the position value in units for the so called
+	 * neutral position of a servo motor given in units.
+	 * This position might specifically defined by the developer
+	 * for specific servo motors.
+	 *
+	 *  \return unsigned short
+	 *
+	 */
+	virtual unsigned short getMidPosInAbs() = 0;
+
+	/**
+	 *
+	 * \brief Delivers the maximal position value the servo motor
+	 * can / shall move to.
+	 *
+	 *  \return unsigned short
+	 *
+	 */
+	virtual unsigned short getMaxPosInAbs() = 0;
+
+	/**
+	 *
+	 *
+	 * \brief Moves the servo motor to the given position.
+	 *
+	 *  \param newPosition unsigned short position value given
+	 *                     in units.
+	 *
+	 *  \return unsigned short actual position set given in units.
+	 */
+	virtual unsigned short setPositionInAbs(unsigned short newPosition) = 0;
+
+
+
+	/**
+	 *
+	 *
+	 * \brief Delivers the position value (in units) the servo trageted at.
+	 *
+	 *  \return unsigned short.
+	 *
+	 */
+	virtual unsigned short getPositionInAbs() = 0;
+
+};
+
+/**
+ *
+ * \class IServoMotoBaseAdv
+ *
+ * \brief Interface class that specifies additional
+ * functionality with respect to set maximal speed
+ * and acceleration.
+ *
+ *
+ */
+class IServoMotoBaseAdv {
+public:
+	virtual ~IServoMotoBaseAdv(){};
+
+	/**
+	 *
+	 *  \brief Sets the maximal speed the servo shall move.
+	 *
+	 *  \param unsigned short newSpeed (the meaning of the values
+	 *      has to be specified in the derived class.)
+	 *
+	 *  \return unsigned short actual speed value set.
+	 */
+	virtual unsigned short setSpeed(unsigned short newSpeed) = 0;
+
+	/**
+	 *
+	 *  \brief Sets the maximal acceleration the servo shall move.
+	 *
+	 *  \param unsigned short newAcceleration (the meaning of the values
+	 *      has to be specified in the derived class.)
+	 *
+	 *  \return unsigned short actual accelaration value set.
+	 */
+	virtual unsigned short setAcceleration(unsigned short newAcceleration) = 0;
+
+};
+
+
+
+/**
+ *
+ *
+ * \brief Interface to control a servo motor.
+ * The interface provides the basic functions for the
+ * control for a specific servo motor.
+ *
+ * Note, different types of servo motors have different specification
+ * with respect to working range and the counting of position units
+ * representing certain motor positions.
+ * Furthermore, implementation of this interface can also differe
+ * because of the boards used to drive the servo motors.
+ * These parameters (working area and units) must be specified / documented
+ * in the derived classes that implement these methods.
  *
  */
 class IServoMotor {
 public:
 	virtual ~IServoMotor(){};
-	virtual unsigned short getServoNumber() = 0;
-	virtual unsigned short getMinPos() = 0;
-	virtual unsigned short getMidPos() = 0;
-	virtual unsigned short getMaxPos() = 0;
-	virtual bool setPositionInAbs(unsigned short newPosition) = 0;
-	virtual bool setPositionInDeg(short newPosition) = 0;
-	virtual bool setPositionInRad(float newPosition) = 0;
-	virtual bool setSpeed(unsigned short newSpeed) = 0;
-	virtual bool setAccelaration(unsigned short newAcceleration) = 0;
-	virtual unsigned short getPositionInAbs() = 0;
+
+	/**
+	 *
+	 *
+	 * \brief Moves the servo motor to the given position.
+	 *
+	 *  \param newPosition unsigned short position value given
+	 *                     in degree.
+	 *
+	 *  \return unsigned short actual position set in degree.
+	 */
+	virtual short setPositionInDeg(short newPosition) = 0;
+
+	/**
+	 *
+	 *
+	 * \brief Moves the servo motor to the given position.
+	 *
+	 *  \param newPosition unsigned short position value given
+	 *                     in radian.
+	 *
+	 *  \return unsigned short actual position set in radian
+	 */
+	virtual float setPositionInRad(float newPosition) = 0;
+
+	/**
+	 *
+	 *
+	 * \brief  Delivers the position value (in degree) the servo trageted at.
+	 *
+	 *  \return unsigned short.
+	 *
+	 */
 	virtual short getPositionInDeg() = 0;
+
+	/**
+	 *
+	 *
+	 * \brief Delivers the position value (in radian) the servo trageted at.
+	 *
+	 *  \return unsigned short.
+	 *
+	 */
 	virtual float getPositionInRad() = 0;
+
+
+	/**
+	 *
+	 *
+	 * \brief
+	 *
+	 *  Shows which settings have to be made in the Pololu Maestro Control Center for the servo,
+	 *  based on the starting position and the delta for the specific servo.
+	 *  See Pololu manual for further explainations.
+	 */
 	virtual void showPololuValues (unsigned short& min, unsigned short& mid, unsigned short& max) = 0;
 };
 
-/** \brief Class for the ServoMotor object
+
+
+
+
+
+/**
  *
- *	\param servoNumber_ = Port to which the servo is connected on the controller
- *	\param startingPosition_ = The center position of the servo, this position is determined in the Pololu Maestro Control Center.
- *	\param delta_ = Range of values that the servo can turn left and right.
- *	\param *connection_ = Pointer to an object of the type Pololu for the serial connection.
+ * \class ServoMotorPololuBase
+ *
+ *
+ * \brief Class implements the interface IServoMotorBase
+ * based on the pololu controller board
+ * (https://www.pololu.com/docs/pdf/0J40/maestro.pdf).
+ *
  */
-class ServoMotor : public IServoMotor{
-private:
-	const short maxDeg = 90;				//maximum degree allowed
-	const float maxRad = M_PI/2;			//maximum radiant allowed, M_PI is the constant from <cmath> for the number Pi
-	const short maxSpeed = 255;				//maximum value for the speed
-	const short maxAcceleration = 255;      //maximum value for the acceleration
-	const short minSpeed = 1;				//minimum value for the speed
-	const short minAcceleration = 1;  //minimum value for the acceleration
-	const short conFactorDegToPos = 10;	    //conversion factor from degrees to position
-	const short conFactorMyToPos = 4;		//conversion factor to convert µs (position value of a servo) to position values
-	unsigned short servoNumber_;
-	unsigned short startingPosition_;	//startPosition is the center position of a servo, in most cases it is value of 6000 (1500µs * 4)
-	unsigned short delta_;
-	Pololu *connection_ = NULL;
+class ServoMotorPololuBase : public IServoMotorBase{
 public:
-	/** \brief ServoMotor class constructor. An object of the ServoMotor type must be initiated via the constructor.
-	 *
-	 * 	\param servo = is the slot number on the controller board to which the servo is connected
-	 *  \param startingPosition = is the center position of the servo motor (must be determined in the Pololu Maestro Control Center)
-	 *  \param delta = is the range of motion that the servo can reach from the center position
-	 *  \param *connection = is a pointer to the Pololu object for the serial connection
-	 *
-	 * */
-	ServoMotor(unsigned short servo, unsigned short startingPosition, unsigned short delta, Pololu *connection);
 
-	/** \brief Returns the port to which the servo is connected to the controller board.
+	/**
 	 *
-	 *  \return The return value is the servoNumber+1 because the internal counting of the controller starts at 0.
+	 * \brief Parameterized constructor. In case of an error
+	 * 			an exception is thrown.
 	 *
+	 *	\param servoID unsigned short. Index (>= 0) of the servo motor that
+	 * 					identifies which slot / pin on the
+	 * 					micro controller board the servo is
+	 * 					connected with.
+	 *
+	 * 	\param neutralPos unsigned short. (neutralPos > 0) Neutral position of the servo,
+	 * 					usually defined by an impulse of 1'500 micro seconds
+	 * 					impulse length.
+	 * 					The position value is usually given by impulse length per
+	 * 					one micro seconds. Using the pololu micro-controller to
+	 * 					control the servor motor the impulse length is given per
+	 * 					units of 1/4 of a quarter of the micro-second.
+	 * 					Therefore, position here is defined impulse length per
+	 * 					one micro second per 1/4 micro second.
+	 * 					Thus, position value = impulse lengths * 4 (units).
+	 *					See Pololu manual for further explanations.
+	 *
+	 *	\param delta unsigned short. (delta < neutralPos) Defines the range of positions values,
+	 * 					starting from the neutral positions +/- delta.
+	 *
+	 *
+	 * 	\param *pololuController. Pointer to a pololu instance that controls the servo motors.
 	 */
+	ServoMotorPololuBase(unsigned short  servoID,
+						 unsigned short  neutralPos,
+						 unsigned short  delta,
+						        IPololu *pololuController);
+	~ServoMotorPololuBase();
 	unsigned short getServoNumber();
-
-	/** \brief Returns the minimum position the servo is able to reach.
-	 *
-	 *  \return The return value is the set startingPosition minus the set delta
-	 *
-	 */
-	unsigned short getMinPos ();
-
-	/** \brief Returns the center position of the servo.
-	 *
-	 *  \return The return value is the set startingPosition.
-	 *
-	 */
-	unsigned short getMidPos ();
-
-	/** \brief Returns the maximum position the servo is able to reach.
-	 *
-	 *  \return The return value is the set startingPosition plus the set delta.
-	 *
-	 */
-	unsigned short getMaxPos ();
-
-	/** \brief Function causes the servo to move to a specific new position (position
-	 *  is specified as an absolute value in a range from 5860 +- 3600).
-	 *
-	 *  \param newPosition as an absolut value
-	 *
-	 *  \return The return value is the return value of the setPosition funktion of the Pololu object.
-	 */
-	bool setPositionInAbs(unsigned short newPosition);
-
-	/** \brief Function causes the servo to move to a specific new position (position is set with a value between -90 and 90 degrees).
-	 *
-	 *  \param newPosition in degrees
-	 *
-	 *  \return The return value is the return value of the setPosition funktion of the Pololu object.
-	 */
-	bool setPositionInDeg(short newPosition);
-
-	/** \brief Function causes the servo to move to a specific new position (position is set with a radiant between -PI/2 and PI/2).
-	 *
-	 *  \param newPosition as radiant
-	 *
-	 *  \return The return value is the return value of the setPosition funktion of the Pololu object.
-	 */
-	bool setPositionInRad(float newPosition);
-
-	/** \brief Sets the speed at which the servo should move (speed range is between 0 and 255)
-	 *
-	 *  \param newSpeed = Speed value (0 stands for the maximum speed of the servo, 1 is (0.25 microseconds) / (10 milliseconds),
-	 *  255 is (63,75 microseconds) / (10 milliseconds))
-	 *
-	 *  \return The return value is the return value of the setSpeed funktion of the Pololu object.
-	 */
-	bool setSpeed(unsigned short newSpeed);
-
-	/** \brief Sets the acceleration with which the set speed should be reached (acceleration range is between 0 and 255)
-	 *
-	 *  \param newAcceleration = Acceleration value (0 stands for the maximum acceleration of the servo, 1 is (0.25 microseconds) / (10 milliseconds) / (80 milliseconds),
-	 *  255 is (63,75 microseconds) / (10 milliseconds) / (80 milliseconds))
-	 *
-	 *  \return The return value is the return value of the setAcceleration funktion of the Pololu object.
-	 */
-	bool setAccelaration(unsigned short newAcceleration);
-
-	/** \brief Returns the position of the servo as absolute value.
-	 *
-	 *  \return The return value is the return value of the getPosition function of the Pololu object.
-	 *
-	 */
+	unsigned short getMinPosInAbs();
+	unsigned short getMidPosInAbs();
+	unsigned short getMaxPosInAbs();
+	unsigned short setPositionInAbs(unsigned short newPosition);
 	unsigned short getPositionInAbs();
-
-	/** \brief Returns the position of the servo in degrees.
+protected:
+	/**
 	 *
-	 *  \return The return value is the return value of the getPosition function of the Pololu object converted into degrees.
+	 * \var pololuCtrl_
+	 *
+	 * \brief Pointer to a API-object of the
+	 * pololu controller (\ref class \IPololu).
+	 */
+	IPololu *pololuCtrl_ = NULL;
+
+
+	/**
+	 *
+	 * \var servoNmb_
+	 *
+	 * \brief Index of the servo motor that
+	 * identifies which slot / pin on the
+	 * micro controller board the servo is
+	 * connected with.
+	 */
+	unsigned int servoNmb_;
+
+	/**
+	 *
+	 * \var neutralPosition_
+	 *
+	 * \brief Neutral position of the servo, usually defined by
+	 * an impulse of 1'500 micro seconds impulse length.
+	 * The position value is usually given by impulse length per
+	 * one micro seconds. Using the pololu microcontroller to
+	 * control the servor motor the impulse length is given per
+	 * units of 1/4 of a quarter of the micro-second.
+	 * Therefore, position here is defined impulse length per
+	 * one micro second per 1/4 micro second.
+	 * Thus, position value = impulse lengths * 4 (units).
+	 *
+	 * See Pololu manual for further explanations.
+	 */
+	unsigned short neutralPosition_;
+
+	/**
+	 *
+	 * \var delta_
+	 *
+	 * \brief Defines the range of positions values.
+	 * Starting from the neutral positions +/- delta.
 	 *
 	 */
-	short getPositionInDeg();
+	unsigned short delta_;
 
-	/** \brief Returns the position of the servo as radiant.
-	 *
-	 *  \return The return value is the return value of the getPosition function of the Pololu object converted into radiant.
-	 *
-	 */
-	float getPositionInRad();
-
-	/** \brief Shows which settings have to be made in the Pololu Maestro Control Center for the servo,
-	 *  based on the starting position and the delta for the specific servo.
-	 */
-	void showPololuValues (unsigned short& min, unsigned short& mid, unsigned short& max);
+	ServoMotorPololuBase(){pololuCtrl_ = NULL;};
 };
+
+/**
+ *
+ * \class ServoMotorPololuBaseAdv
+ *
+ * \brief Implements the interface IServoMotoBaseAdv derived from
+ * class ServoMotorPololuBase.
+ *
+ */
+class ServoMotorPololuBaseAdv : public ServoMotorPololuBase, public IServoMotoBaseAdv{
+public:
+
+	/**
+	 *
+	 * \brief Parameterized constructor. In case of an error
+	 * 			an exception is thrown.
+	 *
+	 *	\param servoID unsigned short. Index (>= 0) of the servo motor that
+	 * 					identifies which slot / pin on the
+	 * 					micro controller board the servo is
+	 * 					connected with.
+	 *
+	 * 	\param neutralPos unsigned short. (neutralPos > 0) Neutral position of the servo,
+	 * 					usually defined by an impulse of 1'500 micro seconds
+	 * 					impulse length.
+	 * 					The position value is usually given by impulse length per
+	 * 					one micro seconds. Using the pololu micro-controller to
+	 * 					control the servor motor the impulse length is given per
+	 * 					units of 1/4 of a quarter of the micro-second.
+	 * 					Therefore, position here is defined impulse length per
+	 * 					one micro second per 1/4 micro second.
+	 * 					Thus, position value = impulse lengths * 4 (units).
+	 *					See Pololu manual for further explanations.
+	 *
+	 *	\param delta unsigned short. (delta < neutralPos) Defines the range of positions values,
+	 * 					starting from the neutral positions +/- delta.
+	 *
+	 *
+	 * 	\param *pololuController. Pointer to a pololu instance that controls the servo motors.
+	 */
+	ServoMotorPololuBaseAdv(unsigned short  servoID,
+							unsigned short  neutralPos,
+							unsigned short  delta,
+							IPololu *pololuController) :
+		ServoMotorPololuBase(servoID,neutralPos,delta,pololuController){;};
+	~ServoMotorPololuBaseAdv(){pololuCtrl_ = NULL;};
+	unsigned short setSpeed(unsigned short newSpeed);
+	unsigned short setAcceleration(unsigned short newAcceleration);
+protected:
+	ServoMotorPololuBaseAdv(){throw new ExceptionPololu(string("NIY"));};
+};
+
+
+class ServoMotor : public ServoMotorPololuBaseAdv, public IServoMotor{
+public:
+
+	/**
+	 *
+	 * \brief Parameterized constructor. In case of an error
+	 * 			an exception is thrown.
+	 *
+	 *	\param servoID unsigned short. Index (>= 0) of the servo motor that
+	 * 					identifies which slot / pin on the
+	 * 					micro controller board the servo is
+	 * 					connected with.
+	 *
+	 * 	\param neutralPos unsigned short. (neutralPos > 0) Neutral position of the servo,
+	 * 					usually defined by an impulse of 1'500 micro seconds
+	 * 					impulse length.
+	 * 					The position value is usually given by impulse length per
+	 * 					one micro seconds. Using the pololu micro-controller to
+	 * 					control the servor motor the impulse length is given per
+	 * 					units of 1/4 of a quarter of the micro-second.
+	 * 					Therefore, position here is defined impulse length per
+	 * 					one micro second per 1/4 micro second.
+	 * 					Thus, position value = impulse lengths * 4 (units).
+	 *					See Pololu manual for further explanations.
+	 *
+	 *	\param delta unsigned short. (delta < neutralPos) Defines the range of positions values,
+	 * 					starting from the neutral positions +/- delta.
+	 *
+	 *
+	 * 	\param *pololuController. Pointer to a pololu instance that controls the servo motors.
+	 */
+	ServoMotor(unsigned short  servoID,
+					 unsigned short  neutralPos,
+					 unsigned short  delta,
+						    IPololu *pololuController) :
+				ServoMotorPololuBaseAdv(servoID,neutralPos,delta,pololuController){
+		maxDeg_ = 180;
+		minDeg_ = 0;
+	};
+
+	~ServoMotor(){pololuCtrl_ = NULL;};
+
+	/**
+	 *
+	 * \brief Maps the given minimal degree value to the minimal position value and
+	 * the given maximal degree value to the maximal position value.
+	 * Per default the maximal position value is defined as 180 degree, while
+	 * the minimal position is defined as 0 degree.
+	 *
+	 *	Note this method call overwrites values set by method setMinMaxRadian
+	 *	and vice versa.
+	 *
+	 */
+	void  setMinMaxDegree(short minDegree, short maxDegree);
+
+	/**
+	 *
+	 * \brief Maps the given minimal degree value to the minimal position value and
+	 * the given maximal degree value to the maximal position value.
+	 * Per default the maximal position value is defined as 2*PI rad, while
+	 * the minimal position is defined as 0 rad.
+	 *
+	 *	Note this method call overwrites values set by method setMinMaxRadian
+	 *	and vice versa.
+	 *
+	 */
+	void  setMinMaxRadian(float minRadian, float maxRadian);
+
+	short setPositionInDeg(short newPosition);
+	float setPositionInRad(float newPosition);
+	short getPositionInDeg();
+	float getPositionInRad();
+	void  showPololuValues(unsigned short& min, unsigned short& mid, unsigned short& max);
+protected:
+	ServoMotor(){throw ExceptionPololu(string("NIY"));};
+private:
+	short          minDeg_ = 0;
+	short          maxDeg_ = 180;
+	float          deg2rad(unsigned short x);
+	short          rad2deg(float x);
+	unsigned short mapDegValue2PosValue(short d);
+	short          mapPosValue2DegValue(unsigned short p);
+};
+
+
+
+
+
+
+/**
+ *
+ * \class ExceptionServerMotor
+ *
+ * \brief Implementation of the exception class for
+ * class ServoMotor
+ *
+ */
+class ExceptionServoMotor : public IException{
+public:
+	ExceptionServoMotor(string msg){
+		msg_ = string("ExceptionServoMotor::") + msg;
+	};
+	string getMsg(){return msg_;}
+protected:
+	string msg_;
+private:
+	ExceptionServoMotor(){};
+};
+
+class ExceptionServoMotorBase : public IException{
+public:
+	ExceptionServoMotorBase(string msg){
+		msg_ = string("ExceptionServoMotorBase::") + msg;
+	};
+	string getMsg(){return msg_;}
+protected:
+	string msg_;
+private:
+	ExceptionServoMotorBase(){};
+};
+
+class ExceptionServoMotorBaseAdv : public IException{
+public:
+	ExceptionServoMotorBaseAdv(string msg){
+		msg_ = string("ExceptionServoMotorBaseAdv::") + msg;
+	};
+	string getMsg(){return msg_;}
+protected:
+	string msg_;
+private:
+	ExceptionServoMotorBaseAdv(){};
+};
+
+
+
 
 #endif /* SERVOMOTOR_HPP_ */
