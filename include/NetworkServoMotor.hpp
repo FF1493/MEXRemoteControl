@@ -7,7 +7,7 @@
 class NetworkServoMotor
 {
 private:
-    unsigned short servo;
+    unsigned short servonum;
     unsigned short delta;
     int position;
     ros::Publisher publishpos;
