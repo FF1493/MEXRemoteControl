@@ -1,0 +1,10 @@
+rosdistro: 'melodic
+
+  '
+roslaunch:
+  uris: {host_henrik_virtualbox__37117: 'http://henrik-VirtualBox:37117/'}
+rosversion: '1.14.10
+
+  '
+run_id: b97b5bca-5bcf-11eb-aaf4-08002710aff3
+servo1: 200

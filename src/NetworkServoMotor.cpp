@@ -14,8 +14,18 @@ NetworkServoMotor::~NetworkServoMotor(){}
 
 bool NetworkServoMotor::setPositionInAbs(unsigned short newPosition){
     MEXRemoteControl::servomsg msg;
+    msg.type="ABS";
     msg.value=newPosition;
     publishpos.publish(msg);
+    while(true)
+    {
+        ros::spinOnce();
+        if(absposition==newPosition)
+            break;
+        std::cout<< "Waiting for Response"<< std::endl;
+        usleep(500000);
+
+    }
 
 }
 

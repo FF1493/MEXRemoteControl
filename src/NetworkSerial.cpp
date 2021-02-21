@@ -12,5 +12,26 @@
 
 void NetworkSerial::callback(const MEXRemoteControl::servomsg& msg)
 {
+    if(msg.type=="ABS")
+    {
+        setPositionInAbs(msg.value);
+        std::cout<< "Received message:"<< msg.value<<std::endl;
+        while(true)
+        {
+            if(getPositionInAbs()==msg.value)
+                break;
+            std::cout<< "Waiting for good value"<<std::endl;
+            usleep(500000);
+        }
+    }
+    else if(msg.type=="DEG")
+    {
+        std::cout<<"Not implemented YET"<<std::endl;
+    }
+    MEXRemoteControl::servorsp resp;
+    resp.abspos = getPositionInAbs();
+    resp.degpos = getPositionInDeg();
+    publishpos.publish(resp);
+
     std::cout<<msg.value<<std::endl;
 }

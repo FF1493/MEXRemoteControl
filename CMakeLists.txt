@@ -210,5 +210,7 @@ include_directories(
 include_directories(include)
 add_executable(ros2serial.cpp src/ros2serial.cpp src/SerialCom.cpp src/ServoMotor.cpp src/Pololu.cpp src/NetworkSerial.cpp )
 add_executable(remote.cpp remote.cpp src/SerialCom.cpp src/ServoMotor.cpp src/Pololu.cpp src/NetworkServoMotor.cpp )
+add_executable(robotarm.cpp robotarm.cpp src/SerialCom.cpp src/ServoMotor.cpp src/Pololu.cpp src/NetworkSerial.cpp )
 target_link_libraries(remote.cpp ${catkin_LIBRARIES})
 target_link_libraries(ros2serial.cpp ${catkin_LIBRARIES})
+target_link_libraries(robotarm.cpp ${catkin_LIBRARIES})
