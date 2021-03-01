@@ -1,3 +1,6 @@
+#ifndef NetworkSerialH
+#define NetworkSerialH
+
 #include "ServoMotor.hpp"
 #include "ros/ros.h"
 #include "ros/time.h"
@@ -14,15 +17,13 @@ private:
 
   
 
-    void callback(const MEXRemoteControl::servomsg &msg);
+    void callback(const MEXRemoteControl::servomsg& msg);
 
 public:
     NetworkSerial(unsigned short servoID,
 										   unsigned short neutralPos,
 										   unsigned short delta,
-										   IPololu  *pololuController):ServoMotor(servoID,neutralPos,delta,pololuController){
-    publishpos = n.advertise<MEXRemoteControl::servorsp>("servo"+to_string(servoNmb_), 10);
-    subservangl = n.subscribe("servorsp"+to_string(servoNmb_), 5, &NetworkSerial::callback,this);
-    };
+										   IPololu  *pololuController,ros::NodeHandle* nodehandle);
     ~NetworkSerial(){};
 };
+#endif 

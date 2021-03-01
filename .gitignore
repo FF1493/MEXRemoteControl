@@ -1,3 +1,5 @@
 .vscode/launch.json
 .vscode/tasks.json
 doc/html/
+src/.vscode/c_cpp_properties.json
+src/.vscode/settings.json

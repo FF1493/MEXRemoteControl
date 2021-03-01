@@ -214,3 +214,4 @@ add_executable(robotarm.cpp robotarm.cpp src/SerialCom.cpp src/ServoMotor.cpp sr
 target_link_libraries(remote.cpp ${catkin_LIBRARIES})
 target_link_libraries(ros2serial.cpp ${catkin_LIBRARIES})
 target_link_libraries(robotarm.cpp ${catkin_LIBRARIES})
+#add_dependencies(robotarm.cpp )

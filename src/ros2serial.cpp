@@ -1,4 +1,4 @@
-#include "ros/ros.h"
+/*#include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "Pololu.hpp"
 #include "ServoMotor.hpp"
@@ -13,9 +13,9 @@ struct Servo{
 }servo1, servo2, servo3, servo4;
 
 
-
+*/
 int main(int argc, char **argv)
-{
+{/*
     unsigned short acceleration = 10;
     unsigned short speed = 100;
 
@@ -37,5 +37,5 @@ int main(int argc, char **argv)
     
     
     
-    ros::spin();
+    ros::spin();*/
 }

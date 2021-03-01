@@ -1,17 +1,20 @@
 #include "NetworkSerial.hpp"
 
-/*NetworkSerial::NetworkSerial(unsigned short servoID,
+NetworkSerial::NetworkSerial(unsigned short servoID,
 										   unsigned short neutralPos,
 										   unsigned short delta,
-										   IPololu  *pololuController):ServoMotor(servoID,neutralPos,delta,pololuController){
+										   IPololu  *pololuController,ros::NodeHandle* nodehandle):n(*nodehandle),ServoMotor(servoID,neutralPos,delta,pololuController){
+    
+    std::cout<<"4.5"<<"servorsp"+to_string(servoID)+"!"<<std::endl;                                      
+    publishpos = n.advertise<MEXRemoteControl::servorsp>("servorsp"+to_string(servoID), 10,true);
+    subservangl = n.subscribe("servo"+to_string(servoID), 10, &NetworkSerial::callback,this);
+    //ros::spin();
 
-    //n=new ros::NodeHandle
-    publishpos = n.advertise<MEXRemoteControl::servorsp>("servo"+to_string(servoNmb_), 10);
-    subservangl = n.subscribe("servorsp"+to_string(servoNmb_), 5, &NetworkSerial::callback,this);
-}*/
+    };
 
 void NetworkSerial::callback(const MEXRemoteControl::servomsg& msg)
 {
+    std::cout<<"GOT MESSAGE"<<std::endl;
     if(msg.type=="ABS")
     {
         setPositionInAbs(msg.value);
