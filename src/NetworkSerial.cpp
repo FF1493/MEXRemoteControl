@@ -14,27 +14,28 @@ NetworkSerial::NetworkSerial(unsigned short servoID,
 
 void NetworkSerial::callback(const MEXRemoteControl::servomsg& msg)
 {
-    std::cout<<"GOT MESSAGE"<<std::endl;
+    //std::cout<<"Not implemented YET"<<std::endl;
     if(msg.type=="ABS")
     {
-        setPositionInAbs(msg.value);
-        std::cout<< "Received message:"<< msg.value<<std::endl;
-        while(true)
-        {
-            if(getPositionInAbs()==msg.value)
-                break;
-            std::cout<< "Waiting for good value"<<std::endl;
-            usleep(500000);
-        }
+        std::cout<<"Set Position to: "<< msg.value <<std::endl;
+        std::cout<<"SetPositioninAbs"<<this->setPositionInAbs(msg.value)<< std::endl; 
+        sleep(1);    
     }
     else if(msg.type=="DEG")
     {
         std::cout<<"Not implemented YET"<<std::endl;
     }
-    MEXRemoteControl::servorsp resp;
-    resp.abspos = getPositionInAbs();
-    resp.degpos = getPositionInDeg();
-    publishpos.publish(resp);
+    
 
-    std::cout<<msg.value<<std::endl;
+}
+void NetworkSerial::poll()
+{
+    ros::spinOnce();
+    MEXRemoteControl::servorsp resp;
+    resp.abspos = this->getPositionInAbs();
+    std::cout<<"Response of get Position in ABS: "<<resp.abspos<<std::endl;
+
+    //resp.degpos = getPositionInDeg();
+    publishpos.publish(resp);
+    std::cout<<std::endl;
 }

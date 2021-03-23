@@ -18,8 +18,9 @@ private:
   
 
     void callback(const MEXRemoteControl::servomsg& msg);
-
 public:
+    void poll();
+
     NetworkSerial(unsigned short servoID,
 										   unsigned short neutralPos,
 										   unsigned short delta,

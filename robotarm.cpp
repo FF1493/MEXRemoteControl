@@ -6,7 +6,7 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "robotarm");
     ros::NodeHandle  n;
-    Pololu conn("/dev/ttyACM0",9600);
+    Pololu conn("/dev/ttyACM1",9600);
     std::cout<<"1"<<std::endl;
     conn.openConnection();
     std::cout<<"2"<<std::endl;
@@ -15,9 +15,14 @@ int main(int argc, char **argv)
     std::cout<<"3"<<std::endl;
     try
     {
-        NetworkSerial Servo0 = NetworkSerial(0, 2500, 1000, &conn, &n);
+        NetworkSerial Servo0 = NetworkSerial(0, 2500, 2450, &conn, &n);
         std::cout <<"4good"<<std::endl;
-
+        while(ros::ok){
+            Servo0.poll();
+            usleep(500000);
+            cout<<"Errors: "<< conn.getErrors() << std::endl;
+            cout<<"PolulugetPos: "<< conn.getPosition(0) << std::endl;
+        }   
     }
     catch(ExceptionServoMotorBase* ex){
         std::cout<< ex->getMsg()<<"4bad"<<std::endl;
@@ -25,7 +30,7 @@ int main(int argc, char **argv)
         std::cout<< ex->getMsg()<<"4bad"<<std::endl;
     }
     std::cout<<"5"<<std::endl;
-    ros::spin();
+    
         
 
   

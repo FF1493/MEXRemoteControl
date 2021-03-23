@@ -93,7 +93,7 @@ unsigned short ServoMotorPololuBase::setPositionInAbs(unsigned short newPosition
 		string msg("setPositionInDeg:: position value is out of range.");
 		throw new ExceptionServoMotorBase(msg);
 	}
-
+	std::cout<< "new Pos: "<< newPosition<< std::endl;
 
 	try{
 		pololuCtrl_->setPosition(servoNmb_,newPosition);

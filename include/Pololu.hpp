@@ -134,6 +134,7 @@ protected:
     unsigned short setPosition(unsigned short servo, unsigned short goToPosition);
     bool setSpeed(unsigned short servo, unsigned short goToSpeed);
     bool setAcceleration(unsigned short servo, unsigned short goToAcceleration);
+    public: //changed for testing !!!
     unsigned short getPosition(unsigned short servo);
 
 

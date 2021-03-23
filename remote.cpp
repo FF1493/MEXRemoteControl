@@ -3,20 +3,19 @@
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "remote");
-    NetworkServoMotor Servo0 = NetworkServoMotor(0, 1000, 2500);
-    while (true)
+    NetworkServoMotor Servo0 = NetworkServoMotor(0, 2500, 5000);
+    while (ros::ok)
     {
-        std::cout<<2000<<std::endl;
-        Servo0.setPositionInAbs(2000);
-        usleep(1000000);
-        std::cout<<2000<<std::endl;
-        std::cout<<Servo0.getPositionInAbs()<<std::endl;
-
+        std::cout<<"setPositionInAbs(1000)"<<std::endl;
         Servo0.setPositionInAbs(1000);
-        usleep(1000000);
-        std::cout<<1000<<std::endl;
-        std::cout<<Servo0.getPositionInAbs()<<std::endl;
+        usleep(5000000);
+        std::cout<<"getPositionInAbs("<<Servo0.getPositionInAbs()<<")"<<std::endl;
 
+        std::cout<<"setPositionInAbs(4000)"<<std::endl;
+        Servo0.setPositionInAbs(4000);
+        usleep(5000000);
+        std::cout<<"getPositionInAbs()"<<Servo0.getPositionInAbs()<<")"<<std::endl;
+        std::cout<<std::endl;
 
     }
 }

@@ -15,16 +15,7 @@ bool NetworkServoMotor::setPositionInAbs(unsigned short newPosition){
     msg.type="ABS";
     msg.value=newPosition;
     publishpos.publish(msg);
-    while(ros :: ok)
-    {
-        ros::spinOnce();
-        if(absposition==newPosition)
-            break;
-        std::cout<< "Waiting for Response "<< absposition<<" "<<newPosition << std::endl;
-        publishpos.publish(msg);
-        usleep(500000);
-
-    }
+    ros::spinOnce();    
 
 }
 
