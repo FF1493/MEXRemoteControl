@@ -259,6 +259,7 @@
     		// This code only supports certain standard baud rates. Supporting
     		// non-standard baud rates should be possible but takes more work.
     		cfsetospeed(&options, B9600);
+			//options.c_cflag &= ~(CBAUD | CRTSCTS | CS8 | CLOCAL | CREAD);
     		cfsetispeed(&options, cfgetospeed(&options));
     		success = tcsetattr(port_, TCSANOW, &options);
     		if (success != 0){
