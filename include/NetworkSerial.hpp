@@ -65,6 +65,11 @@ public:
 	 *
 	 *  \return void.
 	 *
+	 * \todo Function is implemented for absolut messages, but isnt working, due to a bug with the serial connection.
+	 * It has to be clarified if this is a code bug, a permission error, or where the Problem comes from.
+	 * Successfull tested was: The handing over to parent classes, using api without ros.
+	 * To be clarified: Is the error depending on catkin_make? 
+	 *
 	 */
     void callback(const MEXRemoteControl::servomsg& msg);
     
